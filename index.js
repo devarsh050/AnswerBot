@@ -1,17 +1,11 @@
 const botconfig=require("./botconfig.json");
 const Discord=require("discord.js");
-const CLEAR_MESSAGES= '%clear'
 const bot=new Discord.Client({disableEveryone:true});
 
 
 bot.on("ready",async()=>{
-    console.log(`${
-        bot.user.username
-    } online`)
-    bot.user.setActivity(`%help | `,{
-        type:"PLAYING"
-    })
-})     
+    console.log(`Selfbot on`)                               /**Message indiquant que le bot fonctionne correctement */
+});
     bot.on("message",async message=> {
         let prefix= botconfig.prefix
         let messageArray= message.content.split(" ")
@@ -19,7 +13,7 @@ bot.on("ready",async()=>{
         let args= messageArray.slice(1)
         if(cmd===`${
             prefix
-        }serverinfos`){                                       /**Début de la commande servinfos */
+        }servinfos`){                                       /**Début de la commande servinfos */
             let icon= message.guild.iconURL
             let enbedi= new Discord.RichEmbed()
             .setDescription("Informations")
@@ -31,55 +25,12 @@ bot.on("ready",async()=>{
             .addField("Owner:", message.guild.owner.user.username)
             .addField("Member Count:", message.guild.memberCount)
             .addField("Create At:", message.guild.createdAt);
-            return message.channel.send(enbedi)
+            message.channel.send(enbedi)
 
         }
         if(cmd===`${
             prefix
-        }help`){                                            /**Début de la commande help */
-        let enbedh= new Discord.RichEmbed()
-        .setDescription("Bot Command")
-        .setColor("#7C0000")
-        .addField("Prefix", (prefix))
-        .addField("Utility:", ("`serverinfos | botinfos | ping | avatar | invite | support`"))
-        .addField("Moderator", ("`kick | ban | mute | subzero`"))
-        .addField("Funny:", ("`hug | punch | kiss | flipcoin | say`"));
-        return message.channel.send(enbedh)
-        }
-        if(cmd===`${
-            prefix
-        }botinfos`){                                        /**Début de la commande botinfos */
-            let icon= bot.user.displayAvatarURL
-            let enbedb= new Discord.RichEmbed()
-            .setDescription("Informations Bot")
-            .setColor("#7C0000")
-            .setThumbnail(icon)
-            .addField("Name of bot:", bot.user.username)
-            .addField("Owner:", ("Rycek"))
-            .addField("When bot join:", message.guild.joinedAt);
-            return message.channel.send(enbedb)
-        }
-        if(cmd===`${
-            prefix
-        }invite`){                                          /**Début de ma commande invite */
-            let enbedin= new Discord.RichEmbed()
-            .setDescription("Invitation of bot")
-            .setColor("#7C0000")
-            .addField("https://discordapp.com/oauth2/authorize?client_id=484074905848250379&scope=bot&permissions=8", ("Enjoy :D"));
-            return message.channel.send(enbedin)
-        }
-        if(cmd===`${
-            prefix
-        }support`){                                        /**Début de la commande support */
-            let enbeds= new Discord.RichEmbed()
-            .setDescription("If you need help or have question go here")
-            .setColor("#7C0000")
-            .addField("https://discord.gg/JzXpKXW", ("https://discord.gg/FM8nzuY"));
-            return message.channel.send(enbeds)
-        }
-        if(cmd===`${
-            prefix
-        }ping`){
+        }ping`){                                            /**Commande ping qui indique le ping du textuel du serveur */
             
             const m = await message.channel.send("Ping?");
             m.edit(`Pong! Latency of the server is ${m.createdTimestamp - message.createdTimestamp}ms.`);
@@ -94,92 +45,124 @@ bot.on("ready",async()=>{
                 .setDescription(`Avatar of ${user}`)
                 .setColor("#7C0000")
                 .setImage(user.user.displayAvatarURL)
-                return message.channel.send(enbedb)
+                message.channel.send(enbedb)
             }
 
             let enbedpp= new Discord.RichEmbed()
             .setDescription("Your avatar")
             .setColor("#7C0000")
             .setImage(message.author.displayAvatarURL)
-            return message.channel.send(enbedpp)
+            message.channel.send(enbedpp)
         }
           if(cmd===`${
             prefix
-        }zgegnoir`){
+        }zgegnoir`){                                        /** Commande inutile je sais pas pourquoi j'ai fais ça */
             let enbedyy= new Discord.RichEmbed()
             .setDescription("Zizi nwar")
             .setColor("#7C0000")
-            return message.channel.send(enbedyy)
+            message.channel.send(enbedyy)
         }
         if(cmd===`${
             prefix
-        }clear`){
-            // This command removes all messages from all users in the channel, up to 100.
-            
-            const deleteCount = parseInt(args[0], 10);
-            
-            
-            if(!deleteCount || deleteCount < 2 || deleteCount > 100)
-              return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
-            
-            
-            const fetched = await message.channel.fetchMessages({limit: deleteCount});
-            message.channel.bulkDelete(fetched)
-              .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
-          }
-          if(cmd===`${
+        }epil`){                                            /**Pour faire chier les bros en mettant une image casse couille */
+            let enbedz= new Discord.RichEmbed()
+            .setDescription("Epileptic Gif")
+            .setColor("#7C0000")
+            .setImage("https://thumbs.gfycat.com/ExcitableLimpingCanadagoose-size_restricted.gif")
+            message.channel.send(enbedz)
+        }
+        if(cmd===`${
             prefix
-        }ban`){
-            
-            if(!message.member.roles.some(r=>["Deeper"].includes(r.name)) )
-              return message.reply("Sorry, you don't have permissions to use this!");
-            
-            let member = message.mentions.members.first();
-            if(!member)
-              return message.reply("Please mention a valid member of this server");
-            if(!member.bannable) 
-              return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
-        
-            let reason = args.slice(1).join(' ');
-            if(!reason) reason = "No reason provided";
-            
-            await member.ban(reason)
-              .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
-            message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
-          }
-          if(cmd===`${
-              prefix
-          }kick`){
-            
-            if(!message.member.roles.some(r=>["Deeper"].includes(r.name)) )
-              return message.reply("Sorry, you don't have permissions to use this!");
-            
-            
-            let member = message.mentions.members.first() || message.guild.members.get(args[0]);
-            if(!member)
-              return message.reply("Please mention a valid member of this server");
-            if(!member.kickable) 
-              return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
-            
-            
-            let reason = args.slice(1).join(' ');
-            if(!reason) reason = "No reason provided";
-            
-            
-            await member.kick(reason)
-              .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-            message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
-        
-          }
-          if(cmd===`${
-              prefix
-          }say`){
-            const sayMessage = args.join(" ");
+        }hug`){                                             /**Pour faire un gros calîn au frère */
+            if(args[0]){
+                let user= message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+                if(!user) return message.reply("can\'t find user")
+                let enbeda= new Discord.RichEmbed()
+                .setDescription(`You hug ${user}`)
+                .setColor("#7C0000")
+                .setImage("http://i.imgur.com/tuH4gqZ.gif")
+                return message.channel.send(enbeda)
+            }
+            let enbedc= new Discord.RichEmbed()
+            .setDescription("Hug yourself wtf ?!")
+            .setColor("#7C0000")
+            .setImage("https://media1.tenor.com/images/29b083641129892206ee041e4b0cac1b/tenor.gif?itemid=8301730")
+            return message.channel.send(enbedc)
 
-            message.delete().catch(O_o=>{}); 
+        }
+        if(cmd===`${
+            prefix
+        }leave`){                                          /**Pour leave un serveur rapidement */
+           message.guild.leave()
+        }
+        if(cmd===`${
+            prefix
+        }help`){                                            /**Commande pour avoir la liste des differentes commandes */
+            let enbedd= new Discord.RichEmbed()
+            .setTitle(`**UTILS**`)
+            .setDescription(`**By Ipseity**`)
+            .setColor("#7C0000")
+            .addField(`**servinfos**`, `Donne les informations sur le serveur`)
+            .addField(`**avatar**`, `Affiche l'avatar de la personne mentionnée`)
+            .addField(`**ping**`, `Donne le ping du serveur textuel`)
+            .addField(`**embed**`, `Pour mettre en embed votre message`)
 
-            message.channel.send(sayMessage);
-          }
+            let enbede= new Discord.RichEmbed()
+            .setTitle(`**FUN**`)
+            .setColor("#7C0000")
+            .addField(`**hug**`, `Faites un gros calîn :3`)
+            .addField(`**8ball**`, `Pose une question à la boule magique :D`)
+            .addField(`**epil**`, `Affiche un **GIF** pour casser les couilles aux potes`)
+            .addField(`**punch**`, `Tapez votre pote le plus fort possible`)
 
+            message.channel.send(enbedd)
+            message.channel.send(enbede)
+        }
+        if(cmd===`${
+            prefix
+        }8ball`){                                           /**Pose une question à la boule magique */
+            if(!args[2]) return message.reply("Pose une question correcte !");
+            let replies = ["Yes.", "No.", "I don't know", "Repose ta question plus tard"];
+
+            let result = Math.floor((Math.random() * replies.length));
+            let question = args.slice(1).join(" ");
+
+            let enbedf = new Discord.RichEmbed()
+            .setAuthor(message.author.tag)
+            .setColor("#7C0000")
+            .addField("Question", question)
+            .addField("Réponse", replies[result]);
+
+            message.channel.send(enbedf)
+        }
+        if(cmd===`${
+            prefix
+        }punch`){                                               /**Commande pour frapper son pote */
+            if(args[0]){
+                let user= message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+                if(!user) return message.reply("can\'t find user")
+                let enbedg= new Discord.RichEmbed()
+                .setDescription(`Tu tapes ${user}`)
+                .setColor("#7C0000")
+                .setImage("https://media.giphy.com/media/arbHBoiUWUgmc/giphy.gif")
+                message.channel.send(enbedg)
+            }
+            let enbedh= new Discord.RichEmbed()
+            .setDescription("Tu te tapes tout seul :thinking:")
+            .setColor("#7C0000")
+            .setImage("https://media1.tenor.com/images/4ac4e3869525a0ee55feda4ac42cc12b/tenor.gif?itemid=10454825")
+            message.channel.send(enbedh)
+        }
+        if(cmd===`${
+            prefix
+        }embed`){                                               /**Pour mettre en embed un message */
+            
+            let message1 = args.slice(0).join(" ");
+            let enbedj = new Discord.RichEmbed()
+            .setDescription(message1)
+            .setColor("#7C0000")
+            message.channel.send(enbedj)
+        }
+        setInterval(embed)
         });
-      bot.login("NDg0MDc0OTA1ODQ4MjUwMzc5.DmhVRQ.Dc3zyX1zf1-D_4vADlP_rn23EVU");
+      bot.login("mfa.InbJCspBWs2aAXfvwBCBcTq3ZOo6oEnOYfNwV40nJQJ4__eue45YYPWR3b0A7ZP49vkB9Fl_M-Bmrus_dxE8");
