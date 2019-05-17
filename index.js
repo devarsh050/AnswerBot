@@ -165,4 +165,4 @@ bot.on("ready",async()=>{
         }
         setInterval(embed)
         });
-      bot.login("mfa.InbJCspBWs2aAXfvwBCBcTq3ZOo6oEnOYfNwV40nJQJ4__eue45YYPWR3b0A7ZP49vkB9Fl_M-Bmrus_dxE8");
+      bot.login("");
